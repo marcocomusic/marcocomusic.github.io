@@ -1,0 +1,9 @@
+{
+  "v": 1,
+  "email": "marcoco.booking@gmail.com",
+  "kdf": "PBKDF2-SHA256",
+  "iter": 310000,
+  "salt": "odVMhCV6yuv0g2QOeD1qDg==",
+  "iv": "CYP2PLbAUot1I4e1",
+  "data": "A0ikKf1PzKKkO/bsLBReuMQwwaLCoXJG9KxtMxQeC9XyJbTsyydv1qdcnPFTFjOANjJG2iB49uEpz4jsq+vdVWF2T91VusZWjTVwYoj4fvBIK8kTQEDZ8oqoPAdCF4umXf0bPcoeLNxcR3sngbUe5jgdgiRu00H8zJgtgyRvKgNwkYyYdNmBPB7QglP93QaaIRnmVwazgxJGLHWoFA/RkdsTuSVUg0ai2spW6PWw3XoX7PkzGJ1/xXg98b2c7JnAofWsFAevpSKrQpg8MEIwSRwKQ/aGCpPa7yI376qW3RI0fp9jmKihEbaGTYmvlYqt0dS9rINKCpyvC0Gyhl+3w+crTlVxi2H1AmsmT+D9uQigkaegyzf+"
+}
