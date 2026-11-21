@@ -367,6 +367,8 @@ function showSetup(){
             const [o,r]=repo.value.trim().split('/'); if(!o||!r) throw new Error('Repository must look like owner/name');
             const info=await gh(`/repos/${o}/${r}`,{},tok.value.trim());
             if(!info.permissions||!info.permissions.push) throw new Error('This key can read the repository but cannot write to it. Give it “Contents: Read and write”.');
+            // real write test: creating an (unused) blob needs Contents: write
+            await gh(`/repos/${o}/${r}/git/blobs`,{method:'POST',body:JSON.stringify({content:'write-check',encoding:'utf-8'})},tok.value.trim());
             st.token=tok.value.trim(); st.repo={owner:o,repo:r,branch:info.default_branch||'main'}; st.step=2; draw();
           }catch(err){ amsg(err.message,'err'); next.disabled=false; }
         }}, field('GitHub key (fine-grained token)',tok), field('Repository',repo), next, msgEl()),
