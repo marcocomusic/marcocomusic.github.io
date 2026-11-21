@@ -281,6 +281,8 @@ async function gh(path,opts={},token){
   return opts.raw?r.text():r.json();
 }
 const repoPath=()=>`/repos/${R().owner}/${R().repo}`;
+// every save made from the admin is credited to the artist, not to whoever owns the GitHub key
+const who=()=>({name:'MARCOCO',email:(SESSION&&SESSION.email)||DEFAULT_EMAIL,date:new Date().toISOString()});
 
 /* ---------------- crypto: base64, vault, TOTP ---------------- */
 const enc=new TextEncoder(), dec=new TextDecoder();
@@ -330,7 +332,7 @@ async function fetchVault(){
 async function writeVault(vault,message){
   const path=`${repoPath()}/contents/admin/vault.json`;
   let sha; try{ sha=(await gh(`${path}?ref=${R().branch}`)).sha; }catch(e){ if(e.status!==404) throw e; }
-  await gh(path,{method:'PUT',body:JSON.stringify({message,content:utf8b64(JSON.stringify(vault,null,2)+'\n'),branch:R().branch,...(sha?{sha}:{})})});
+  await gh(path,{method:'PUT',body:JSON.stringify({message,content:utf8b64(JSON.stringify(vault,null,2)+'\n'),branch:R().branch,author:who(),committer:who(),...(sha?{sha}:{})})});
 }
 
 /* ======================================================================
@@ -783,7 +785,7 @@ async function publish(){
     const cb=await gh(`${base}/git/blobs`,{method:'POST',body:JSON.stringify({content:json,encoding:'utf-8'})});
     tree.push({path:'content.json',mode:'100644',type:'blob',sha:cb.sha});
     const nt=await gh(`${base}/git/trees`,{method:'POST',body:JSON.stringify({base_tree:commit.tree.sha,tree})});
-    const nc=await gh(`${base}/git/commits`,{method:'POST',body:JSON.stringify({message:`Update website content (${SECTION_NAME()})`,tree:nt.sha,parents:[head]})});
+    const nc=await gh(`${base}/git/commits`,{method:'POST',body:JSON.stringify({message:`Update website content (${SECTION_NAME()})`,tree:nt.sha,parents:[head],author:who(),committer:who()})});
     await gh(`${base}/git/refs/heads/${br}`,{method:'PATCH',body:JSON.stringify({sha:nc.sha})});
     original=JSON.stringify(content); for(const p of used) uploads.delete(p);
     M.set(1,'done','Content saved'); changed();
