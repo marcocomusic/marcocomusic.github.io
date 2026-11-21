@@ -256,6 +256,8 @@ async function gh(path,opts={},token){
   if(!r.ok){
     let m=''; try{m=(await r.json()).message}catch(e){}
     if(r.status===401) m='GitHub key is invalid or expired. Replace it in Settings → Security.';
+    else if(r.status===403&&/not accessible by personal access token/i.test(m)) m='The GitHub key is not allowed to do this. Edit the token on GitHub: Repository permissions → Contents: Read and write, Pages: Read-only.';
+    else if(r.status===403&&/approval|pending/i.test(m)) m='The GitHub key is waiting for approval by the organization owner (Organization settings → Personal access tokens → Pending requests).';
     const err=new Error(m||('GitHub error '+r.status)); err.status=r.status; throw err;
   }
   if(r.status===204) return null;
