@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin — MARCOCO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f2ee; --card:#fff; --ink:#17140f; --mut:#6e665c; --faint:#9a9186; --line:#e7e2da; --line-2:#d9d2c7;
+  --acc:#ff3d8b; --acc-ink:#fff; --ok:#14945f; --warn:#b97700; --err:#cf2f47; --focus:#3d7bff;
+  --r:14px; --body:'Manrope',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace; --display:'Anton',Impact,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--body);-webkit-font-smoothing:antialiased}
+button,input,textarea,select{font:inherit;color:inherit}
+a{color:inherit}
+[hidden]{display:none!important}
+.mono{font-family:var(--mono)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 16px;border-radius:10px;border:1px solid var(--line-2);background:var(--card);font-weight:600;font-size:14px;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background .15s,border-color .15s,opacity .15s}
+.btn:hover{border-color:var(--ink)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.primary{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn.primary:hover{background:#000}
+.btn.accent{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+.btn.ghost{background:transparent;border-color:transparent}
+.btn.ghost:hover{background:#0000000a}
+.btn.sm{height:32px;padding:0 12px;font-size:13px;border-radius:8px}
+.btn.block{width:100%;height:46px}
+.btn.danger{color:var(--err)}
+.ibtn{width:30px;height:30px;border-radius:8px;border:1px solid transparent;background:transparent;display:inline-grid;place-items:center;cursor:pointer;color:var(--mut);font-size:14px}
+.ibtn:hover{background:#0000000a;color:var(--ink)}
+.ibtn:disabled{opacity:.3;cursor:default;background:transparent}
+.ibtn.del:hover{color:var(--err)}
+
+/* inputs */
+label.l{display:block;font-weight:600;font-size:13px;margin-bottom:6px}
+.help{font-size:12.5px;color:var(--mut);margin:-2px 0 8px}
+input[type=text],input[type=email],input[type=password],input[type=number],input:not([type]),textarea{width:100%;border:1px solid var(--line-2);background:#fff;border-radius:10px;padding:10px 12px;outline:none;transition:border-color .15s,box-shadow .15s}
+textarea{resize:vertical;min-height:44px;line-height:1.55}
+input:focus,textarea:focus{border-color:var(--focus);box-shadow:0 0 0 3px #3d7bff22}
+input[type=range]{width:100%;accent-color:var(--ink)}
+.switch{position:relative;display:inline-block;width:44px;height:26px}
+.switch input{opacity:0;width:0;height:0}
+.switch span{position:absolute;inset:0;background:var(--line-2);border-radius:99px;transition:background .2s;cursor:pointer}
+.switch span::after{content:'';position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #0003;transition:transform .2s}
+.switch input:checked+span{background:var(--ink)}
+.switch input:checked+span::after{transform:translateX(18px)}
+
+/* auth */
+.auth{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 16px;gap:18px}
+.acard{width:min(440px,100%);background:var(--card);border:1px solid var(--line);border-radius:20px;padding:34px 30px;box-shadow:0 20px 60px #0000000d}
+.acard.wide{width:min(560px,100%)}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:26px}
+.brand .logo{font-family:var(--display);font-size:24px;letter-spacing:.04em}
+.brand .tag{font:600 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;background:var(--ink);color:#fff;padding:6px 8px;border-radius:6px}
+.acard h1{font-size:24px;line-height:1.2;margin-bottom:6px}
+.acard .sub{color:var(--mut);margin-bottom:22px}
+.acard .f{margin-bottom:14px}
+.code{letter-spacing:.4em;font-family:var(--mono);font-size:20px;text-align:center}
+.msg{min-height:20px;margin-top:12px;font-size:13.5px}
+.msg.err{color:var(--err)} .msg.ok{color:var(--ok)}
+.foot{font-size:13px;color:var(--mut)}
+details.help2{margin-top:18px;border-top:1px solid var(--line);padding-top:14px;font-size:13.5px;color:var(--mut)}
+details.help2 summary{cursor:pointer;color:var(--ink);font-weight:600}
+details.help2 ol,details.help2 ul{margin:10px 0 0 18px;display:grid;gap:6px}
+details.help2 code,.kbd{font-family:var(--mono);font-size:12px;background:#f1eee8;border:1px solid var(--line);padding:1px 6px;border-radius:5px}
+.steps{display:flex;gap:6px;margin-bottom:22px}
+.steps span{flex:1;height:4px;border-radius:4px;background:var(--line)}
+.steps span.on{background:var(--ink)}
+.qrbox{display:flex;gap:20px;align-items:center;background:#faf8f5;border:1px solid var(--line);border-radius:14px;padding:16px;margin:8px 0 16px}
+.qrbox #qr{background:#fff;padding:8px;border-radius:10px;border:1px solid var(--line);flex:none}
+.qrbox #qr img,.qrbox #qr canvas{display:block}
+.secret{font-family:var(--mono);font-size:13px;word-break:break-all;background:#fff;border:1px dashed var(--line-2);padding:8px 10px;border-radius:8px;margin-top:8px;user-select:all}
+
+/* app */
+.bar{position:sticky;top:0;z-index:20;height:64px;display:flex;align-items:center;gap:14px;padding:0 20px;background:#f4f2eeee;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar .brand{margin:0}
+.bar .grow{flex:1}
+.state{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--mut);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 12px}
+.state i{width:8px;height:8px;border-radius:50%;background:var(--ok)}
+.state.dirty i{background:var(--warn)}
+.state.busy i{background:var(--focus);animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.3}}
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);max-width:1240px;margin:0 auto;gap:28px;padding:24px 20px 80px}
+.side{position:sticky;top:88px;align-self:start;display:flex;flex-direction:column;gap:2px}
+.side .grp{font:600 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:16px 12px 8px}
+.side .grp:first-child{margin-top:4px}
+.nav{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;cursor:pointer;border:0;background:transparent;text-align:left;width:100%}
+.nav:hover{background:#0000000a}
+.nav.on{background:var(--card);box-shadow:0 1px 0 var(--line),0 0 0 1px var(--line)}
+.nav .ic{width:26px;height:26px;border-radius:7px;background:#ebe6de;display:grid;place-items:center;font-size:13px;flex:none}
+.nav.on .ic{background:var(--ink);color:#fff}
+.nav b{display:block;font-size:14px;font-weight:600}
+.nav small{display:block;font-size:12px;color:var(--faint);line-height:1.3}
+.nav .dot{margin-left:auto;width:7px;height:7px;border-radius:50%;background:var(--warn)}
+.main{min-width:0}
+.shead{margin:6px 0 20px}
+.shead h1{font-size:28px;line-height:1.15}
+.shead p{color:var(--mut);margin-top:6px;max-width:640px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;margin-bottom:16px}
+.card.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px}
+.field.wide{grid-column:1/-1}
+.chead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px}
+.chead h2{font-size:16px}
+.chead p{font-size:13px;color:var(--mut)}
+.rangeRow{display:flex;align-items:center;gap:12px}
+.rangeRow .rv{font-family:var(--mono);font-size:13px;min-width:44px;text-align:right}
+
+/* media */
+.media{display:flex;gap:14px;align-items:center;border:1px dashed var(--line-2);border-radius:12px;padding:10px;background:#fcfbf9;transition:border-color .15s,background .15s}
+.media.drag{border-color:var(--focus);background:#3d7bff0d}
+.mthumb{width:88px;height:88px;border-radius:9px;background:#efebe4;flex:none;overflow:hidden;display:grid;place-items:center;color:var(--faint);font-size:12px}
+.mthumb img,.mthumb video{width:100%;height:100%;object-fit:cover}
+.media.audio .mthumb{width:auto;height:auto;background:none;flex:1}
+.media.audio .mthumb audio{width:100%;max-width:340px}
+.mbody{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.mbody input{font-family:var(--mono);font-size:12.5px;padding:8px 10px}
+.mrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tiny{font-size:12px;color:var(--faint)}
+.badge{font:600 10px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;background:#fff3d6;color:var(--warn);padding:4px 6px;border-radius:5px}
+
+/* lists */
+.items{display:flex;flex-direction:column;gap:8px}
+.item{border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden}
+.ihead{display:flex;align-items:center;gap:12px;padding:8px 8px 8px 12px;cursor:pointer;user-select:none}
+.ihead:hover{background:#faf8f5}
+.ihead .num{font:600 11px/1 var(--mono);color:var(--faint);width:20px}
+.ihead .th{width:40px;height:40px;border-radius:7px;background:#efebe4 center/cover;flex:none}
+.ihead .tt{flex:1;min-width:0}
+.ihead .tt b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ihead .tt small{display:block;font-size:12px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ihead .chev{color:var(--faint);transition:transform .2s;margin:0 4px}
+.item.open .chev{transform:rotate(90deg)}
+.ibody{display:none;border-top:1px solid var(--line);padding:18px;grid-template-columns:1fr 1fr;gap:16px 18px;background:#fdfcfa}
+.item.open .ibody{display:grid}
+.add{margin-top:10px;border-style:dashed;color:var(--mut)}
+.srow{display:flex;gap:8px;align-items:flex-start}
+.srow textarea{flex:1}
+.srow .acts{display:flex;flex-direction:column}
+
+/* modal + toast */
+.modal{position:fixed;inset:0;z-index:50;background:#17140f66;display:grid;place-items:center;padding:16px}
+.mcard{width:min(460px,100%);background:#fff;border-radius:18px;padding:26px;box-shadow:0 30px 80px #0003}
+.mcard h3{font-size:19px;margin-bottom:14px}
+.plist{list-style:none;display:grid;gap:10px;margin-bottom:20px}
+.plist li{display:flex;gap:10px;align-items:center;font-size:14px;color:var(--mut)}
+.plist li::before{content:'';width:16px;height:16px;border-radius:50%;border:2px solid var(--line-2);flex:none}
+.plist li.doing{color:var(--ink)}
+.plist li.doing::before{border-color:var(--focus);border-top-color:transparent;animation:spin .8s linear infinite}
+.plist li.done{color:var(--ink)}
+.plist li.done::before{background:var(--ok);border-color:var(--ok)}
+.plist li.fail{color:var(--err)}
+.plist li.fail::before{background:var(--err);border-color:var(--err)}
+@keyframes spin{to{transform:rotate(360deg)}}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);opacity:0;z-index:60;background:var(--ink);color:#fff;padding:11px 16px;border-radius:10px;font-size:14px;transition:opacity .25s,transform .25s;pointer-events:none;max-width:calc(100vw - 32px)}
+#toast.on{opacity:1;transform:translateX(-50%)}
+#toast.err{background:var(--err)}
+
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr;gap:12px;padding-top:12px}
+  .side{position:static;flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:6px;margin:0 -20px;padding-left:20px;padding-right:20px}
+  .side .grp{display:none}
+  .nav{flex:none;width:auto;padding:8px 12px;background:var(--card);border:1px solid var(--line)}
+  .nav small{display:none}
+  .card.grid,.ibody{grid-template-columns:1fr}
+  .bar{padding:0 12px;gap:8px}
+  .bar .hide-s{display:none}
+}
+@media (max-width:520px){
+  .state span{display:none}
+  .qrbox{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<section class="auth" id="auth">
+  <div class="acard" id="acard">
+    <div class="brand"><span class="logo">MARCOCO</span><span class="tag">Admin</span></div>
+    <div id="authBody"><p class="sub">Loading…</p></div>
+  </div>
+  <p class="foot"><a href="../">← Back to website</a></p>
+</section>
+
+<div id="app" hidden>
+  <header class="bar">
+    <div class="brand"><span class="logo">MARCOCO</span><span class="tag">Admin</span></div>
+    <div class="grow"></div>
+    <div class="state" id="state"><i></i><span id="stateTxt">All changes are live</span></div>
+    <a class="btn ghost hide-s" href="../" target="_blank" rel="noopener">View site ↗</a>
+    <button class="btn" id="discard" disabled>Discard</button>
+    <button class="btn accent" id="publish" disabled>Publish</button>
+  </header>
+  <div class="layout">
+    <nav class="side" id="side"></nav>
+    <main class="main" id="main"></main>
+  </div>
+</div>
+
+<div class="modal" id="modal" hidden><div class="mcard"><h3 id="mTitle">Publishing</h3><ul class="plist" id="plist"></ul><div id="mFoot"></div></div></div>
+<div id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+/* ======================================================================
+   MARCOCO admin — static CMS on GitHub Pages
+   • Content lives in /content.json; media in /assets/uploads/
+   • A GitHub token (write access to this repo only) is stored in
+     /admin/vault.json, encrypted with AES-GCM using a key derived from the
+     admin password (PBKDF2-SHA256, 310k iterations).
+   • Sign-in = email + password (decrypts the vault) + authenticator code (TOTP).
+   ====================================================================== */
+const DEFAULT_EMAIL='marcoco.booking@gmail.com';
+const ISSUER='MARCOCO Admin';
+const $=s=>document.querySelector(s);
+const LS={get(k){try{return sessionStorage.getItem(k)}catch(e){return null}},set(k,v){try{sessionStorage.setItem(k,v)}catch(e){}},del(k){try{sessionStorage.removeItem(k)}catch(e){}}};
+
+function h(tag,attrs,...kids){
+  const el=document.createElement(tag);
+  for(const [k,v] of Object.entries(attrs||{})){
+    if(v==null||v===false) continue;
+    if(k.startsWith('on')&&typeof v==='function') el.addEventListener(k.slice(2),v);
+    else if(k==='class') el.className=v;
+    else if(k==='html') el.innerHTML=v;
+    else if(typeof v!=='string'&&k in el) el[k]=v;
+    else el.setAttribute(k,v===true?'':v);
+  }
+  for(const c of kids.flat()){ if(c==null||c===false||c==='') continue; el.append(c instanceof Node?c:document.createTextNode(String(c))); }
+  return el;
+}
+let toastT;
+function toast(msg,kind){const t=$('#toast'); t.textContent=msg; t.className='on'+(kind==='err'?' err':''); clearTimeout(toastT); toastT=setTimeout(()=>t.className='',kind==='err'?5200:2600);}
+
+/* ---------------- repo + GitHub API ---------------- */
+function guessRepo(){
+  const host=location.hostname;
+  if(host.endsWith('.github.io')){
+    const owner=host.split('.')[0]; const seg=location.pathname.split('/').filter(Boolean);
+    const repo=(seg.length>1&&seg[0]!=='admin')?seg[0]:`${owner}.github.io`;
+    return {owner,repo,branch:'main'};
+  }
+  return {owner:'marcocomusic',repo:'marcocomusic.github.io',branch:'main'};
+}
+let SESSION=null; // {token,totp,email,repo:{owner,repo,branch}}
+const R=()=>SESSION.repo;
+async function gh(path,opts={},token){
+  const r=await fetch('https://api.github.com'+path,{...opts,headers:{
+    'Authorization':'Bearer '+(token||SESSION.token),'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28',
+    ...(opts.body?{'Content-Type':'application/json'}:{}),...(opts.headers||{})}});
+  if(!r.ok){
+    let m=''; try{m=(await r.json()).message}catch(e){}
+    if(r.status===401) m='GitHub key is invalid or expired. Replace it in Settings → Security.';
+    const err=new Error(m||('GitHub error '+r.status)); err.status=r.status; throw err;
+  }
+  if(r.status===204) return null;
+  return opts.raw?r.text():r.json();
+}
+const repoPath=()=>`/repos/${R().owner}/${R().repo}`;
+
+/* ---------------- crypto: base64, vault, TOTP ---------------- */
+const enc=new TextEncoder(), dec=new TextDecoder();
+const rand=n=>crypto.getRandomValues(new Uint8Array(n));
+const b64=u8=>{let s='';u8.forEach(b=>s+=String.fromCharCode(b));return btoa(s);};
+const unb64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+const utf8b64=s=>b64(enc.encode(s));
+async function deriveKey(pw,salt,iter){
+  const base=await crypto.subtle.importKey('raw',enc.encode(pw),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+}
+async function seal(obj,pw){
+  const salt=rand(16),iv=rand(12),iter=310000;
+  const key=await deriveKey(pw,salt,iter);
+  const ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},key,enc.encode(JSON.stringify(obj))));
+  return {v:1,email:obj.email.toLowerCase(),kdf:'PBKDF2-SHA256',iter,salt:b64(salt),iv:b64(iv),data:b64(ct)};
+}
+async function unseal(v,pw){
+  const key=await deriveKey(pw,unb64(v.salt),v.iter);
+  const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:unb64(v.iv)},key,unb64(v.data));
+  return JSON.parse(dec.decode(pt));
+}
+const B32='ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+function b32enc(u8){let bits=0,val=0,out='';for(const b of u8){val=(val<<8)|b;bits+=8;while(bits>=5){out+=B32[(val>>>(bits-5))&31];bits-=5;}}if(bits>0)out+=B32[(val<<(5-bits))&31];return out;}
+function b32dec(s){s=s.toUpperCase().replace(/[\s=]/g,'');let bits=0,val=0;const out=[];for(const c of s){const i=B32.indexOf(c);if(i<0)continue;val=(val<<5)|i;bits+=5;if(bits>=8){out.push((val>>>(bits-8))&255);bits-=8;}}return new Uint8Array(out);}
+async function totpAt(secret,step){
+  const key=await crypto.subtle.importKey('raw',b32dec(secret),{name:'HMAC',hash:'SHA-1'},false,['sign']);
+  const buf=new ArrayBuffer(8),dv=new DataView(buf); dv.setUint32(0,Math.floor(step/4294967296)); dv.setUint32(4,step>>>0);
+  const hm=new Uint8Array(await crypto.subtle.sign('HMAC',key,buf)); const o=hm[19]&15;
+  return String((((hm[o]&127)<<24)|(hm[o+1]<<16)|(hm[o+2]<<8)|hm[o+3])%1e6).padStart(6,'0');
+}
+async function checkTotp(secret,code){
+  code=String(code).replace(/\D/g,''); if(code.length!==6) return false;
+  const s=Math.floor(Date.now()/30000);
+  for(const d of [-1,0,1]) if(await totpAt(secret,s+d)===code) return true;
+  return false;
+}
+const otpUri=(email,secret)=>`otpauth://totp/${encodeURIComponent(ISSUER+':'+email)}?secret=${secret}&issuer=${encodeURIComponent(ISSUER)}&algorithm=SHA1&digits=6&period=30`;
+function drawQR(el,text){el.innerHTML=''; new QRCode(el,{text,width:172,height:172,correctLevel:QRCode.CorrectLevel.M});}
+
+async function fetchVault(){
+  const r=await fetch('vault.json?v='+Date.now(),{cache:'no-store'});
+  if(r.status===404) return null;
+  if(!r.ok) throw new Error('Could not load vault ('+r.status+')');
+  return r.json();
+}
+async function writeVault(vault,message){
+  const path=`${repoPath()}/contents/admin/vault.json`;
+  let sha; try{ sha=(await gh(`${path}?ref=${R().branch}`)).sha; }catch(e){ if(e.status!==404) throw e; }
+  await gh(path,{method:'PUT',body:JSON.stringify({message,content:utf8b64(JSON.stringify(vault,null,2)+'\n'),branch:R().branch,...(sha?{sha}:{})})});
+}
+
+/* ======================================================================
+   AUTH SCREENS
+   ====================================================================== */
+const authBody=$('#authBody');
+let VAULT=null;
+function field(label,input,help){return h('div',{class:'f'},h('label',{class:'l'},label),help?h('div',{class:'help'},help):null,input);}
+const msgEl=()=>h('div',{class:'msg',id:'amsg'});
+function amsg(t,kind){const m=$('#amsg'); if(m){m.textContent=t; m.className='msg '+(kind||'');}}
+
+function showLogin(){
+  $('#acard').classList.remove('wide');
+  const em=h('input',{type:'email',autocomplete:'username',value:VAULT.email||''});
+  const pw=h('input',{type:'password',autocomplete:'current-password'});
+  const code=h('input',{class:'code',inputmode:'numeric',autocomplete:'one-time-code',maxlength:'7',placeholder:'••••••'});
+  const go=h('button',{class:'btn primary block',type:'submit'},'Sign in');
+  let fails=0;
+  const form=h('form',{onsubmit:async e=>{
+    e.preventDefault(); go.disabled=true; amsg('Checking…');
+    try{
+      if(em.value.trim().toLowerCase()!==String(VAULT.email).toLowerCase()) throw new Error('bad');
+      let data; try{ data=await unseal(VAULT,pw.value); }catch(_){ throw new Error('bad'); }
+      if(!(await checkTotp(data.totp,code.value))){ amsg('That authenticator code is not valid. Wait for a new code and try again.','err'); go.disabled=false; return; }
+      SESSION=data; LS.set('mc_session',JSON.stringify(data)); startApp();
+    }catch(err){
+      fails++; await new Promise(r=>setTimeout(r,Math.min(fails*700,4000)));
+      amsg('Wrong email or password.','err'); go.disabled=false;
+    }
+  }},
+    field('Email',em), field('Password',pw), field('Authenticator code',code,'6-digit code from your authenticator app'), go, msgEl());
+  authBody.replaceChildren(h('h1',{},'Sign in'),h('p',{class:'sub'},'Edit the website. Published changes go live in about a minute.'),form,
+    h('details',{class:'help2'},h('summary',{},'Lost your phone or password?'),
+      h('p',{style:'margin-top:8px'},'Access can be reset by your web admin: they delete ',h('code',{},'admin/vault.json'),' in the GitHub repository and run the first-time setup again. Your website content is not affected.')));
+  (em.value?pw:em).focus();
+}
+
+function showSetup(){
+  $('#acard').classList.add('wide');
+  const st={step:1,token:'',repo:guessRepo(),email:DEFAULT_EMAIL,pw:'',secret:b32enc(rand(20))};
+  const bar=()=>h('div',{class:'steps'},[1,2,3].map(i=>h('span',{class:i<=st.step?'on':''})));
+  const draw=()=>{
+    if(st.step===1){
+      const tok=h('input',{type:'password',placeholder:'github_pat_…',value:st.token,autocomplete:'off'});
+      const repo=h('input',{type:'text',value:`${st.repo.owner}/${st.repo.repo}`});
+      const next=h('button',{class:'btn primary block',type:'submit'},'Continue');
+      authBody.replaceChildren(bar(),h('h1',{},'Connect GitHub'),
+        h('p',{class:'sub'},'First-time setup. The site is saved in a GitHub repository; the admin needs a key that can write to it. You only do this once.'),
+        h('form',{onsubmit:async e=>{e.preventDefault(); next.disabled=true; amsg('Checking key…');
+          try{
+            const [o,r]=repo.value.trim().split('/'); if(!o||!r) throw new Error('Repository must look like owner/name');
+            const info=await gh(`/repos/${o}/${r}`,{},tok.value.trim());
+            if(!info.permissions||!info.permissions.push) throw new Error('This key can read the repository but cannot write to it. Give it “Contents: Read and write”.');
+            st.token=tok.value.trim(); st.repo={owner:o,repo:r,branch:info.default_branch||'main'}; st.step=2; draw();
+          }catch(err){ amsg(err.message,'err'); next.disabled=false; }
+        }}, field('GitHub key (fine-grained token)',tok), field('Repository',repo), next, msgEl()),
+        h('details',{class:'help2',open:true},h('summary',{},'How to create the key (2 minutes)'),h('ol',{},
+          h('li',{},'Sign in to GitHub as the owner of the ',h('b',{},st.repo.owner),' organization.'),
+          h('li',{},'Open ',h('a',{href:'https://github.com/settings/personal-access-tokens/new',target:'_blank',rel:'noopener'},'github.com/settings/personal-access-tokens/new'),'.'),
+          h('li',{},'Name: ',h('code',{},'MARCOCO admin'),' · Expiration: 1 year · Resource owner: ',h('code',{},st.repo.owner),'.'),
+          h('li',{},'Repository access → Only select repositories → ',h('code',{},st.repo.repo),'.'),
+          h('li',{},'Permissions → Repository → ',h('b',{},'Contents: Read and write'),' and ',h('b',{},'Pages: Read-only'),'.'),
+          h('li',{},'Generate token, copy it, paste it above. If GitHub says it needs approval, approve it under the organization’s Settings → Personal access tokens.')
+        )));
+      tok.focus();
+    }
+    else if(st.step===2){
+      const em=h('input',{type:'email',value:st.email,autocomplete:'username'});
+      const pw=h('input',{type:'password',autocomplete:'new-password',value:st.pw});
+      const pw2=h('input',{type:'password',autocomplete:'new-password',value:st.pw});
+      const next=h('button',{class:'btn primary block',type:'submit'},'Continue');
+      authBody.replaceChildren(bar(),h('h1',{},'Admin account'),h('p',{class:'sub'},'The email and password used to sign in.'),
+        h('form',{onsubmit:e=>{e.preventDefault();
+          if(!/^\S+@\S+\.\S+$/.test(em.value.trim())) return amsg('Enter a valid email.','err');
+          if(pw.value.length<10) return amsg('Use at least 10 characters for the password.','err');
+          if(pw.value!==pw2.value) return amsg('The passwords do not match.','err');
+          st.email=em.value.trim().toLowerCase(); st.pw=pw.value; st.step=3; draw();
+        }}, field('Email',em), field('Password',pw,'At least 10 characters. A short sentence works well.'), field('Repeat password',pw2), next, msgEl(),
+        h('button',{class:'btn ghost sm',type:'button',style:'margin-top:6px',onclick:()=>{st.step=1;draw();}},'← Back')));
+      em.focus();
+    }
+    else{
+      const qr=h('div',{id:'qr'}); const code=h('input',{class:'code',inputmode:'numeric',autocomplete:'one-time-code',maxlength:'7',placeholder:'••••••'});
+      const go=h('button',{class:'btn primary block',type:'submit'},'Finish setup');
+      authBody.replaceChildren(bar(),h('h1',{},'Authenticator app'),
+        h('p',{class:'sub'},'Scan this with Google Authenticator, Microsoft Authenticator, Authy or 1Password, then enter the 6-digit code it shows.'),
+        h('div',{class:'qrbox'},qr,h('div',{},h('b',{},ISSUER),h('div',{class:'tiny'},st.email),h('div',{class:'tiny',style:'margin-top:10px'},"Can't scan? Enter this key manually:"),h('div',{class:'secret'},st.secret.replace(/(.{4})/g,'$1 ').trim()))),
+        h('form',{onsubmit:async e=>{e.preventDefault(); go.disabled=true;
+          if(!(await checkTotp(st.secret,code.value))){ amsg('Code not accepted. Check the phone clock and try the newest code.','err'); go.disabled=false; return; }
+          try{
+            amsg('Encrypting and saving…');
+            SESSION={token:st.token,totp:st.secret,email:st.email,repo:st.repo};
+            const v=await seal(SESSION,st.pw); await writeVault(v,'Admin: initial setup');
+            VAULT=v; LS.set('mc_session',JSON.stringify(SESSION)); toast('Setup complete'); startApp();
+          }catch(err){ SESSION=null; amsg(err.message,'err'); go.disabled=false; }
+        }}, field('6-digit code',code), go, msgEl(),
+        h('button',{class:'btn ghost sm',type:'button',style:'margin-top:6px',onclick:()=>{st.step=2;draw();}},'← Back')));
+      drawQR(qr,otpUri(st.email,st.secret)); code.focus();
+    }
+  };
+  draw();
+}
+
+/* ======================================================================
+   CONTENT SCHEMA — what the editor shows, section by section
+   ====================================================================== */
+const IMG='image', VID='video', AUD='audio';
+const SCHEMA=[
+  {grp:'Website'},
+  {id:'general',icon:'⚙',title:'General',desc:'Browser title, search description, entry screen and background music.',fields:[
+    {k:'site.title',label:'Browser tab title',type:'text',wide:true},
+    {k:'site.description',label:'Search & share description',type:'textarea',help:'Shown by Google and when the link is shared.'},
+    {k:'site.gateLine',label:'Entry screen line',type:'text',wide:true,help:'Small text above the name on the “Enter” screen. Separate words with ·'},
+    {k:'audio.track',label:'Background music',type:AUD,help:'MP3, plays after a visitor clicks “Enter — sound on”.'},
+    {k:'audio.label',label:'Player label',type:'text'},
+    {k:'audio.bpm',label:'BPM (visual pulse)',type:'number'},
+    {k:'audio.volume',label:'Music volume',type:'range',min:0,max:1,step:.05,wide:true},
+  ]},
+  {id:'hero',icon:'★',title:'Hero',desc:'The first screen: the giant name and the small texts around it.',fields:[
+    {k:'hero.name',label:'Artist name',type:'text',help:'Shown huge on the first screen and in the logo.'},
+    {k:'hero.tagRight',label:'Location',type:'text'},
+    {k:'hero.tagLeft',label:'Genres line',type:'text',wide:true},
+    {k:'hero.leftText',label:'Top-left text',type:'textarea',rows:2},
+    {k:'hero.rightText',label:'Top-right text',type:'textarea',rows:2},
+    {k:'hero.hint',label:'Scroll hint',type:'textarea',rows:2},
+  ]},
+  {id:'manifesto',icon:'◎',title:'Sound statement',desc:'Big lines revealed over the kaleidoscope, plus the moving tape below.',fields:[
+    {k:'manifesto.lines',label:'Lines',type:'strings',help:'Every second line is shown as outline text.'},
+    {k:'manifesto.image',label:'Kaleidoscope photo',type:IMG},
+    {k:'manifesto.tape',label:'Moving tape text',type:'text',wide:true},
+  ]},
+  {id:'bio',icon:'✎',title:'Bio',desc:'Portrait, biography, milestones and numbers.',fields:[
+    {k:'bio.title',label:'Heading',type:'text'},
+    {k:'bio.titleOutline',label:'Heading — outline line',type:'text'},
+    {k:'bio.lead',label:'Intro paragraph',type:'textarea'},
+    {k:'bio.portrait',label:'Portrait photo',type:IMG},
+    {k:'bio.badge',label:'Photo badge',type:'text'},
+    {k:'bio.paragraphs',label:'Paragraphs',type:'strings',itemName:'paragraph'},
+    {k:'bio.timeline',label:'Milestones',type:'list',itemName:'milestone',title:'year',sub:'label',fields:[
+      {k:'year',label:'Year',type:'text'},{k:'label',label:'Label',type:'text'}],newItem:{year:'2026',label:''}},
+    {k:'bio.stats',label:'Numbers',type:'list',itemName:'number',title:'value',sub:'label',fields:[
+      {k:'value',label:'Number',type:'number'},{k:'suffix',label:'After number (e.g. +)',type:'text'},{k:'label',label:'Label',type:'textarea',rows:2}],newItem:{value:0,suffix:'',label:''}},
+  ]},
+  {id:'gallery',icon:'▦',title:'Gallery',desc:'Photos shown in the sideways-scrolling gallery. Drag order with the arrows.',fields:[
+    {k:'gallery.title',label:'Heading',type:'text'},
+    {k:'gallery.titleOutline',label:'Heading — outline line',type:'text'},
+    {k:'gallery.intro',label:'Intro text',type:'textarea'},
+    {k:'gallery.images',label:'Photos',type:'list',itemName:'photo',title:'caption',thumb:'src',fields:[
+      {k:'src',label:'Photo',type:IMG},{k:'caption',label:'Caption',type:'text',wide:true}],newItem:{src:'',caption:''}},
+  ]},
+  {id:'releases',icon:'◉',title:'Releases',desc:'Records shown as vinyl sliding out of the sleeve.',fields:[
+    {k:'releases.title',label:'Heading',type:'text'},
+    {k:'releases.titleOutline',label:'Heading — outline line',type:'text'},
+    {k:'releases.items',label:'Releases',type:'list',itemName:'release',title:'title',sub:'label',thumb:'cover',fields:[
+      {k:'title',label:'Title',type:'textarea',rows:2,help:'Press Enter for a line break.'},{k:'label',label:'Label',type:'text'},
+      {k:'year',label:'Year',type:'text'},{k:'type',label:'Type',type:'text',help:'Single, EP, Remix…'},
+      {k:'link',label:'Listen link',type:'text',wide:true,help:'Spotify, Beatport, SoundCloud… Leave empty to hide the button.'},
+      {k:'cover',label:'Sleeve image',type:IMG},{k:'disc',label:'Vinyl centre image',type:IMG}],
+      newItem:{title:'',year:'2026',type:'Single',label:'',link:'',cover:'',disc:''}},
+  ]},
+  {id:'live',icon:'▶',title:'Live videos',desc:'Clips in the sideways “From the floor” section. Short, muted, looping.',fields:[
+    {k:'live.title',label:'Heading',type:'text'},
+    {k:'live.titleOutline',label:'Heading — outline line',type:'text'},
+    {k:'live.intro',label:'Intro text',type:'textarea'},
+    {k:'live.outro',label:'Closing line',type:'text'},
+    {k:'live.outroOutline',label:'Closing line — outline',type:'text'},
+    {k:'live.videos',label:'Videos',type:'list',itemName:'video',title:'title',sub:'meta',thumb:'poster',fields:[
+      {k:'src',label:'Video file',type:VID,help:'MP4, under 25 MB, 10–20 seconds works best.'},
+      {k:'poster',label:'Cover image',type:IMG,help:'Shown before the video loads.'},
+      {k:'title',label:'Title',type:'text'},{k:'meta',label:'Place · genre',type:'text'},
+      {k:'vertical',label:'Vertical video (phone)',type:'toggle'}],
+      newItem:{src:'',poster:'',title:'',meta:'',vertical:false}},
+  ]},
+  {id:'shows',icon:'☰',title:'Shows',desc:'Past and upcoming gigs. Top of the list shows first.',fields:[
+    {k:'shows.title',label:'Heading',type:'text'},
+    {k:'shows.titleOutline',label:'Heading — outline line',type:'text'},
+    {k:'shows.intro',label:'Intro text',type:'textarea',rows:2},
+    {k:'shows.items',label:'Shows',type:'list',itemName:'show',title:'venue',sub:'city',pre:'year',thumb:'image',fields:[
+      {k:'year',label:'Year / date',type:'text'},{k:'venue',label:'Venue / event',type:'text'},
+      {k:'city',label:'City, country',type:'text'},{k:'image',label:'Hover photo',type:IMG}],
+      newItem:{year:'2026',venue:'',city:'',image:''}},
+  ]},
+  {id:'booking',icon:'✉',title:'Booking & links',desc:'Contact email, press kit and social profiles.',fields:[
+    {k:'booking.email',label:'Booking email',type:'email'},
+    {k:'booking.buttonLabel',label:'Button text',type:'text'},
+    {k:'booking.title',label:'Heading',type:'text'},
+    {k:'booking.titleOutline',label:'Heading — outline line',type:'text'},
+    {k:'booking.sub',label:'Small line under heading',type:'text',wide:true},
+    {k:'booking.presskit',label:'Press kit link',type:'text',wide:true},
+    {k:'booking.rider',label:'Technical rider link',type:'text',wide:true},
+    {k:'socials',label:'Social links',type:'list',itemName:'link',title:'label',sub:'url',fields:[
+      {k:'label',label:'Name',type:'text'},{k:'url',label:'URL',type:'text',help:'Leave empty to hide.'}],newItem:{label:'',url:''}},
+  ]},
+  {id:'tunnel',icon:'◈',title:'3D tunnel',desc:'Photos you fly through while scrolling. The first one sits behind the name.',fields:[
+    {k:'tunnel.images',label:'Tunnel photos',type:'list',itemName:'photo',thumb:'src',title:'src',fields:[{k:'src',label:'Photo',type:IMG}],newItem:{src:''}},
+  ]},
+  {id:'footer',icon:'▁',title:'Footer',desc:'Small print at the very bottom.',fields:[
+    {k:'footer.left',label:'Left',type:'text',wide:true},{k:'footer.right',label:'Right',type:'text',wide:true}]},
+  {grp:'Account'},
+  {id:'security',icon:'🔒',title:'Settings & security',desc:'Email, password, authenticator and GitHub key.',custom:renderSecurity},
+];
+
+/* ======================================================================
+   EDITOR
+   ====================================================================== */
+let content=null, original='', uploads=new Map(), current='general', uid=0;
+const openItems=new WeakSet();
+const main=()=>$('#main');
+
+function ctx(path){const ks=path.split('.');let o=content;for(const k of ks.slice(0,-1)){if(o[k]==null||typeof o[k]!=='object')o[k]={};o=o[k];}return [o,ks[ks.length-1]];}
+function preview(p){ if(!p) return ''; if(uploads.has(p)) return uploads.get(p).url; if(/^(https?:|data:|blob:)/.test(p)) return p; return '../'+p.replace(/^\/+/,''); }
+function isDirty(){ return JSON.stringify(content)!==original || [...uploads.keys()].some(p=>JSON.stringify(content).includes(p)); }
+function changed(){
+  const d=isDirty();
+  $('#publish').disabled=!d; $('#discard').disabled=!d;
+  const s=$('#state'); s.className='state'+(d?' dirty':''); $('#stateTxt').textContent=d?'Unpublished changes':'All changes are live';
+}
+addEventListener('beforeunload',e=>{ if(content&&isDirty()){ e.preventDefault(); e.returnValue=''; } });
+function autosize(t){t.style.height='auto';t.style.height=(t.scrollHeight+2)+'px';}
+
+function renderSide(){
+  const side=$('#side'); side.innerHTML='';
+  for(const s of SCHEMA){
+    if(s.grp){side.append(h('div',{class:'grp'},s.grp));continue;}
+    side.append(h('button',{class:'nav'+(s.id===current?' on':''),type:'button',onclick:()=>{current=s.id;renderSide();renderSection();scrollTo({top:0});}},
+      h('span',{class:'ic'},s.icon),h('span',{},h('b',{},s.title),h('small',{},s.desc.split('.')[0]))));
+  }
+}
+function renderSection(){
+  const sec=SCHEMA.find(s=>s.id===current); const m=main(); m.innerHTML='';
+  m.append(h('div',{class:'shead'},h('h1',{},sec.title),h('p',{},sec.desc)));
+  if(sec.custom){ sec.custom(m); return; }
+  let card=null;
+  for(const f of sec.fields){
+    const [o,k]=ctx(f.k);
+    if(f.type==='list'||f.type==='strings'){
+      card=null;
+      m.append(h('div',{class:'card'},h('div',{class:'chead'},h('h2',{},f.label),f.help?h('p',{},f.help):null),f.type==='list'?listEl(f,o,k):stringsEl(f,o,k)));
+      continue;
+    }
+    if(!card){card=h('div',{class:'card grid'}); m.append(card);}
+    card.append(fieldEl(f,o,k));
+  }
+}
+
+function fieldEl(f,obj,key){
+  const id='f'+(++uid);
+  const wide=f.wide||['textarea',IMG,VID,AUD].includes(f.type);
+  const w=h('div',{class:'field'+(wide?' wide':'')});
+  if(f.type!=='toggle'){ w.append(h('label',{class:'l',for:id},f.label)); if(f.help) w.append(h('div',{class:'help'},f.help)); }
+  const v=obj[key], set=x=>{obj[key]=x;changed();};
+  let el;
+  switch(f.type){
+    case 'textarea': el=h('textarea',{id,rows:String(f.rows||3)}); el.value=v??''; el.addEventListener('input',()=>{set(el.value);autosize(el);}); requestAnimationFrame(()=>autosize(el)); break;
+    case 'number': el=h('input',{id,type:'number',step:'any'}); el.value=v??''; el.addEventListener('input',()=>set(el.value===''?'':Number(el.value))); break;
+    case 'range': { const r=h('input',{id,type:'range',min:String(f.min),max:String(f.max),step:String(f.step)}); r.value=v??f.max; const out=h('span',{class:'rv'},Math.round((+r.value)*100)+'%');
+      r.addEventListener('input',()=>{set(Number(r.value)); out.textContent=Math.round(r.value*100)+'%';}); el=h('div',{class:'rangeRow'},r,out); break; }
+    case 'toggle': { const cb=h('input',{type:'checkbox',id}); cb.checked=!!v; cb.addEventListener('change',()=>set(cb.checked));
+      el=h('div',{class:'rangeRow',style:'justify-content:space-between'},h('label',{class:'l',for:id,style:'margin:0'},f.label),h('label',{class:'switch'},cb,h('span'))); break; }
+    case IMG: case VID: case AUD: el=mediaEl(f,obj,key); break;
+    default: el=h('input',{id,type:f.type==='email'?'email':'text'}); el.value=v??''; el.addEventListener('input',()=>set(el.value));
+  }
+  w.append(el); return w;
+}
+
+const ACCEPT={image:'image/jpeg,image/png,image/webp,image/gif',video:'video/mp4,video/webm,video/quicktime',audio:'audio/mpeg,audio/mp4,audio/aac,audio/wav,audio/ogg,audio/x-m4a'};
+const HINT={image:'JPG, PNG or WebP · large photos are resized automatically',video:'MP4 · max 45 MB',audio:'MP3 · max 45 MB'};
+function mediaEl(f,obj,key){
+  const box=h('div',{class:'media '+f.type});
+  const thumb=h('div',{class:'mthumb'});
+  const path=h('input',{type:'text',placeholder:'assets/… or https://…'}); path.value=obj[key]||'';
+  const file=h('input',{type:'file',accept:ACCEPT[f.type],hidden:true});
+  const up=h('button',{class:'btn sm',type:'button',onclick:()=>file.click()},'Upload…');
+  const clear=h('button',{class:'btn sm ghost',type:'button',onclick:()=>{path.value='';obj[key]='';changed();paint();box.dispatchEvent(new Event('input',{bubbles:true}));}},'Remove');
+  const badge=h('span',{class:'badge',hidden:true},'Not published yet');
+  const paint=()=>{
+    const p=path.value.trim(); thumb.innerHTML=''; badge.hidden=!uploads.has(p); clear.hidden=!p;
+    if(!p){thumb.append(f.type===AUD?h('span',{class:'tiny'},'No file'):'No file');return;}
+    const u=preview(p);
+    if(f.type===IMG) thumb.append(h('img',{src:u,alt:'',loading:'lazy'}));
+    else if(f.type===VID) thumb.append(h('video',{src:u,muted:true,playsInline:true,preload:'metadata'}));
+    else thumb.append(h('audio',{src:u,controls:true,preload:'none'}));
+  };
+  const take=async fl=>{
+    if(!fl) return; up.disabled=true; up.textContent='Preparing…';
+    try{ const p=await addUpload(fl,f.type); path.value=p; obj[key]=p; changed(); paint(); box.dispatchEvent(new Event('input',{bubbles:true})); toast('Added — it uploads when you press Publish'); }
+    catch(err){ toast(err.message,'err'); }
+    up.disabled=false; up.textContent='Upload…'; file.value='';
+  };
+  file.addEventListener('change',()=>take(file.files[0]));
+  path.addEventListener('input',()=>{obj[key]=path.value.trim();changed();paint();});
+  box.addEventListener('dragover',e=>{e.preventDefault();box.classList.add('drag');});
+  box.addEventListener('dragleave',()=>box.classList.remove('drag'));
+  box.addEventListener('drop',e=>{e.preventDefault();box.classList.remove('drag');take(e.dataTransfer.files[0]);});
+  paint();
+  box.append(thumb,h('div',{class:'mbody'},path,h('div',{class:'mrow'},up,clear,badge,h('span',{class:'tiny'},HINT[f.type]))),file);
+  return box;
+}
+const slug=s=>s.toLowerCase().replace(/\.[^.]+$/,'').normalize('NFKD').replace(/[^\w]+/g,'-').replace(/^-|-$/g,'').slice(0,40)||'file';
+async function shrinkImage(file){
+  if(!/image\/(jpeg|png|webp)/.test(file.type)) return {blob:file,ext:file.name.split('.').pop().toLowerCase()};
+  const bmp=await createImageBitmap(file); const max=2000, sc=Math.min(1,max/Math.max(bmp.width,bmp.height));
+  if(sc===1&&file.size<1.2e6) return {blob:file,ext:file.name.split('.').pop().toLowerCase()};
+  const c=document.createElement('canvas'); c.width=Math.round(bmp.width*sc); c.height=Math.round(bmp.height*sc);
+  c.getContext('2d').drawImage(bmp,0,0,c.width,c.height);
+  const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',.86)); return {blob,ext:'jpg'};
+}
+async function addUpload(file,kind){
+  if(kind!==IMG&&!new RegExp('^'+kind+'/').test(file.type)) throw new Error(`That file is not ${kind==='audio'?'an audio':'a '+kind} file.`);
+  if(file.size>45*1024*1024) throw new Error('File is too large (max 45 MB). Please compress it first.');
+  let blob=file, ext=(file.name.split('.').pop()||'bin').toLowerCase();
+  if(kind===IMG){ if(!/^image\//.test(file.type)) throw new Error('That file is not an image.'); ({blob,ext}=await shrinkImage(file)); }
+  const p=`assets/uploads/${Date.now().toString(36)}-${slug(file.name)}.${ext}`;
+  const data=await new Promise((res,rej)=>{const fr=new FileReader();fr.onload=()=>res(String(fr.result).split(',')[1]);fr.onerror=rej;fr.readAsDataURL(blob);});
+  uploads.set(p,{b64:data,url:URL.createObjectURL(blob),size:blob.size});
+  return p;
+}
+
+function listEl(f,obj,key){
+  if(!Array.isArray(obj[key])) obj[key]=[];
+  const arr=obj[key]; const box=h('div',{class:'items'});
+  const titleOf=(it,i)=>String((f.title&&it[f.title])||'').replace(/\n/g,' ').replace(/^assets\/(uploads\/)?/,'')||`${f.itemName||'Item'} ${i+1}`;
+  const draw=()=>{
+    box.innerHTML='';
+    arr.forEach((it,i)=>{
+      const tb=h('b',{},titleOf(it,i)); const sb=h('small',{},[f.pre&&it[f.pre],f.sub&&it[f.sub]].filter(Boolean).join(' · '));
+      const th=f.thumb?h('span',{class:'th'}):null; if(th&&it[f.thumb]) th.style.backgroundImage=`url("${preview(it[f.thumb])}")`;
+      const body=h('div',{class:'ibody'}); f.fields.forEach(sf=>body.append(fieldEl(sf,it,sf.k)));
+      body.addEventListener('input',()=>{tb.textContent=titleOf(it,i); sb.textContent=[f.pre&&it[f.pre],f.sub&&it[f.sub]].filter(Boolean).join(' · ');});
+      body.addEventListener('change',()=>{ if(th) th.style.backgroundImage=it[f.thumb]?`url("${preview(it[f.thumb])}")`:''; });
+      const card=h('div',{class:'item'+(openItems.has(it)?' open':'')});
+      const mv=(d)=>{const j=i+d; [arr[i],arr[j]]=[arr[j],arr[i]]; changed(); draw();};
+      const head=h('div',{class:'ihead',onclick:e=>{ if(e.target.closest('.ibtn')) return; card.classList.toggle('open'); card.classList.contains('open')?openItems.add(it):openItems.delete(it); }},
+        h('span',{class:'num'},String(i+1).padStart(2,'0')),th,h('div',{class:'tt'},tb,sb),
+        h('button',{class:'ibtn',type:'button',title:'Move up',disabled:i===0,onclick:()=>mv(-1)},'↑'),
+        h('button',{class:'ibtn',type:'button',title:'Move down',disabled:i===arr.length-1,onclick:()=>mv(1)},'↓'),
+        h('button',{class:'ibtn del',type:'button',title:'Delete',onclick:()=>{ if(confirm(`Delete this ${f.itemName||'item'}?`)){arr.splice(i,1);changed();draw();} }},'✕'),
+        h('span',{class:'chev'},'›'));
+      card.append(head,body); box.append(card);
+      // refresh thumbs after uploads (mediaEl changes value without 'change' event)
+      body.addEventListener('input',()=>{ if(th) th.style.backgroundImage=it[f.thumb]?`url("${preview(it[f.thumb])}")`:''; });
+    });
+    box.append(h('button',{class:'btn add',type:'button',onclick:()=>{const n=JSON.parse(JSON.stringify(f.newItem||{})); arr.push(n); openItems.add(n); changed(); draw();}},`+ Add ${f.itemName||'item'}`));
+  };
+  draw(); return box;
+}
+function stringsEl(f,obj,key){
+  if(!Array.isArray(obj[key])) obj[key]=[];
+  const arr=obj[key]; const box=h('div',{class:'items'});
+  const draw=()=>{
+    box.innerHTML='';
+    arr.forEach((s,i)=>{
+      const t=h('textarea',{rows:'1'}); t.value=s; t.addEventListener('input',()=>{arr[i]=t.value;changed();autosize(t);}); requestAnimationFrame(()=>autosize(t));
+      const mv=d=>{const j=i+d;[arr[i],arr[j]]=[arr[j],arr[i]];changed();draw();};
+      box.append(h('div',{class:'srow'},t,h('div',{class:'acts'},
+        h('button',{class:'ibtn',type:'button',disabled:i===0,onclick:()=>mv(-1)},'↑'),
+        h('button',{class:'ibtn',type:'button',disabled:i===arr.length-1,onclick:()=>mv(1)},'↓')),
+        h('button',{class:'ibtn del',type:'button',onclick:()=>{arr.splice(i,1);changed();draw();}},'✕')));
+    });
+    box.append(h('button',{class:'btn add',type:'button',onclick:()=>{arr.push('');changed();draw();}},`+ Add ${f.itemName||'line'}`));
+  };
+  draw(); return box;
+}
+
+/* ---------------- security settings ---------------- */
+function renderSecurity(m){
+  const card=(title,desc,...kids)=>h('div',{class:'card'},h('div',{class:'chead'},h('h2',{},title)),desc?h('p',{class:'help',style:'margin:-6px 0 14px'},desc):null,...kids);
+  const msg=()=>h('div',{class:'msg'});
+  const say=(el,t,k)=>{el.textContent=t;el.className='msg '+(k||'');};
+  async function verifyPw(pw){ const v=await fetchVault(); if(!v) throw new Error('No vault found.'); try{ await unseal(v,pw); }catch(_){ throw new Error('Current password is wrong.'); } }
+  async function save(newPw,label){ const v=await seal(SESSION,newPw); await writeVault(v,label); VAULT=v; LS.set('mc_session',JSON.stringify(SESSION)); }
+
+  // account
+  { const em=h('input',{type:'email'}); em.value=SESSION.email; const cur=h('input',{type:'password',autocomplete:'current-password'});
+    const np=h('input',{type:'password',autocomplete:'new-password',placeholder:'Leave empty to keep current'}); const np2=h('input',{type:'password',autocomplete:'new-password'});
+    const out=msg(); const b=h('button',{class:'btn primary',type:'submit'},'Save account');
+    m.append(card('Email & password','Used to sign in to this admin.',h('form',{class:'card grid',style:'border:0;padding:0;margin:0',onsubmit:async e=>{e.preventDefault(); b.disabled=true; say(out,'Saving…');
+      try{ if(!/^\S+@\S+\.\S+$/.test(em.value.trim())) throw new Error('Enter a valid email.');
+        if(np.value&&np.value.length<10) throw new Error('New password needs at least 10 characters.');
+        if(np.value!==np2.value) throw new Error('New passwords do not match.');
+        await verifyPw(cur.value); SESSION.email=em.value.trim().toLowerCase(); await save(np.value||cur.value,'Admin: update account');
+        cur.value=np.value=np2.value=''; say(out,'Saved.','ok'); toast('Account updated'); }
+      catch(err){ say(out,err.message,'err'); } b.disabled=false; }},
+      h('div',{class:'field wide'},h('label',{class:'l'},'Email'),em),
+      h('div',{class:'field'},h('label',{class:'l'},'New password'),np),
+      h('div',{class:'field'},h('label',{class:'l'},'Repeat new password'),np2),
+      h('div',{class:'field wide'},h('label',{class:'l'},'Current password (required)'),cur),
+      h('div',{class:'field wide'},b,out))));
+  }
+  // authenticator
+  { const box=h('div'); const start=h('button',{class:'btn',type:'button'},'Set up a new authenticator');
+    start.onclick=()=>{
+      const secret=b32enc(rand(20)); const qr=h('div',{id:'qr'}); const code=h('input',{class:'code',inputmode:'numeric',maxlength:'7',placeholder:'••••••'});
+      const cur=h('input',{type:'password',autocomplete:'current-password'}); const out=msg(); const b=h('button',{class:'btn primary',type:'submit'},'Confirm new authenticator');
+      box.replaceChildren(h('div',{class:'qrbox'},qr,h('div',{},h('b',{},ISSUER),h('div',{class:'tiny'},SESSION.email),h('div',{class:'secret'},secret.replace(/(.{4})/g,'$1 ').trim()))),
+        h('form',{onsubmit:async e=>{e.preventDefault(); b.disabled=true; say(out,'Checking…');
+          try{ if(!(await checkTotp(secret,code.value))) throw new Error('Code not accepted — try the newest code.');
+            await verifyPw(cur.value); SESSION.totp=secret; await save(cur.value,'Admin: new authenticator');
+            box.replaceChildren(h('p',{class:'msg ok'},'New authenticator is active. The old one no longer works.')); toast('Authenticator updated'); }
+          catch(err){ say(out,err.message,'err'); b.disabled=false; } }},
+          h('div',{class:'f'},h('label',{class:'l'},'6-digit code from the new app'),code),
+          h('div',{class:'f',style:'margin-top:12px'},h('label',{class:'l'},'Current password'),cur), b, out));
+      drawQR(qr,otpUri(SESSION.email,secret));
+    };
+    box.append(start);
+    m.append(card('Authenticator app','Replace the phone or app that produces your 6-digit codes. The old one stops working after you confirm.',box));
+  }
+  // github key
+  { const tok=h('input',{type:'password',placeholder:'github_pat_…',autocomplete:'off'}); const cur=h('input',{type:'password',autocomplete:'current-password'});
+    const out=msg(); const b=h('button',{class:'btn primary',type:'submit'},'Replace key');
+    m.append(card('GitHub key',`Connected to ${R().owner}/${R().repo}. Replace the key when it expires (GitHub emails a reminder).`,
+      h('form',{onsubmit:async e=>{e.preventDefault(); b.disabled=true; say(out,'Checking key…');
+        try{ const info=await gh(repoPath(),{},tok.value.trim()); if(!info.permissions?.push) throw new Error('This key cannot write to the repository.');
+          await verifyPw(cur.value); SESSION.token=tok.value.trim(); await save(cur.value,'Admin: replace GitHub key'); tok.value=cur.value=''; say(out,'Key replaced.','ok'); }
+        catch(err){ say(out,err.message,'err'); } b.disabled=false; }},
+        h('div',{class:'f'},h('label',{class:'l'},'New key'),tok), h('div',{class:'f',style:'margin-top:12px'},h('label',{class:'l'},'Current password'),cur), b, out)));
+  }
+  m.append(card('Sign out','Signs out of this browser tab.',h('button',{class:'btn danger',type:'button',onclick:()=>{ if(isDirty()&&!confirm('You have unpublished changes. Sign out anyway?')) return; LS.del('mc_session'); content=null; location.reload(); }},'Sign out')));
+}
+
+/* ---------------- publish ---------------- */
+function modal(title,steps){
+  $('#mTitle').textContent=title; const ul=$('#plist'); ul.innerHTML='';
+  const lis=steps.map(s=>{const li=h('li',{},s); ul.append(li); return li;});
+  $('#mFoot').innerHTML=''; $('#modal').hidden=false;
+  return {
+    set(i,state,text){ lis.forEach((li,j)=>{ if(j<i&&!li.className) li.className='done'; }); lis[i].className=state; if(text) lis[i].textContent=text; },
+    foot(...els){ $('#mFoot').replaceChildren(...els); }
+  };
+}
+async function publish(){
+  if(!isDirty()) return;
+  const json=JSON.stringify(content,null,2)+'\n';
+  const used=[...uploads.keys()].filter(p=>json.includes(p));
+  const M=modal('Publishing',[used.length?`Upload ${used.length} file${used.length>1?'s':''}`:'Prepare changes','Save content','Rebuild website']);
+  $('#publish').disabled=true; $('#state').className='state busy'; $('#stateTxt').textContent='Publishing…';
+  try{
+    M.set(0,'doing');
+    const base=repoPath(), br=R().branch;
+    const ref=await gh(`${base}/git/ref/heads/${br}`); const head=ref.object.sha;
+    const commit=await gh(`${base}/git/commits/${head}`);
+    const tree=[]; let n=0;
+    for(const p of used){ M.set(0,'doing',`Uploading ${++n} of ${used.length}…`);
+      const bl=await gh(`${base}/git/blobs`,{method:'POST',body:JSON.stringify({content:uploads.get(p).b64,encoding:'base64'})});
+      tree.push({path:p,mode:'100644',type:'blob',sha:bl.sha}); }
+    M.set(0,'done',used.length?`Uploaded ${used.length} file${used.length>1?'s':''}`:'Changes prepared');
+    M.set(1,'doing');
+    const cb=await gh(`${base}/git/blobs`,{method:'POST',body:JSON.stringify({content:json,encoding:'utf-8'})});
+    tree.push({path:'content.json',mode:'100644',type:'blob',sha:cb.sha});
+    const nt=await gh(`${base}/git/trees`,{method:'POST',body:JSON.stringify({base_tree:commit.tree.sha,tree})});
+    const nc=await gh(`${base}/git/commits`,{method:'POST',body:JSON.stringify({message:`Update website content (${SECTION_NAME()})`,tree:nt.sha,parents:[head]})});
+    await gh(`${base}/git/refs/heads/${br}`,{method:'PATCH',body:JSON.stringify({sha:nc.sha})});
+    original=JSON.stringify(content); for(const p of used) uploads.delete(p);
+    M.set(1,'done','Content saved'); changed();
+    M.set(2,'doing','Rebuilding website…');
+    const ok=await waitForBuild(nc.sha);
+    M.set(2,ok===true?'done':ok===false?'fail':'done',ok===true?'Website is live':ok===false?'Build failed — check GitHub Pages':'Live in about a minute');
+    M.foot(h('div',{class:'mrow'},h('a',{class:'btn primary',href:'../?v='+Date.now(),target:'_blank',rel:'noopener'},'View website ↗'),h('button',{class:'btn',type:'button',onclick:()=>$('#modal').hidden=true},'Close')));
+  }catch(err){
+    const lis=[...document.querySelectorAll('#plist li')]; const i=Math.max(0,lis.findIndex(l=>l.className==='doing'));
+    M.set(i,'fail',err.message); M.foot(h('button',{class:'btn',type:'button',onclick:()=>$('#modal').hidden=true},'Close'));
+    changed();
+  }
+}
+const SECTION_NAME=()=>SCHEMA.find(s=>s.id===current)?.title||'admin';
+async function waitForBuild(sha){
+  const t0=Date.now();
+  while(Date.now()-t0<180000){
+    await new Promise(r=>setTimeout(r,5000));
+    try{ const b=await gh(`${repoPath()}/pages/builds/latest`);
+      if(b.commit===sha&&b.status==='built') return true;
+      if(b.commit===sha&&b.status==='errored') return false;
+    }catch(e){ if(e.status===403||e.status===404) return null; }
+  }
+  return null;
+}
+
+/* ---------------- boot ---------------- */
+async function loadContent(){
+  const raw=await gh(`${repoPath()}/contents/content.json?ref=${R().branch}`,{raw:true,headers:{Accept:'application/vnd.github.raw'}});
+  content=JSON.parse(raw); original=JSON.stringify(content); uploads.clear();
+}
+async function startApp(){
+  $('#auth').hidden=true; $('#app').hidden=false;
+  $('#main').replaceChildren(h('p',{class:'help'},'Loading content…'));
+  try{ await loadContent(); }
+  catch(err){ $('#main').replaceChildren(h('div',{class:'card'},h('b',{},'Could not load content'),h('p',{class:'help',style:'margin-top:6px'},err.message))); current='security'; renderSide(); return; }
+  renderSide(); renderSection(); changed();
+}
+$('#publish').addEventListener('click',publish);
+$('#discard').addEventListener('click',()=>{ if(!confirm('Discard all unpublished changes?')) return; content=JSON.parse(original); uploads.clear(); renderSection(); changed(); toast('Changes discarded'); });
+addEventListener('keydown',e=>{ if((e.metaKey||e.ctrlKey)&&e.key==='s'){ e.preventDefault(); if(content&&isDirty()) publish(); } });
+
+(async function init(){
+  if(!window.crypto?.subtle){ authBody.replaceChildren(h('p',{class:'msg err'},'This page must be opened over https.')); return; }
+  const s=LS.get('mc_session'); if(s){ try{ SESSION=JSON.parse(s); }catch(e){} }
+  try{ VAULT=await fetchVault(); }catch(err){ authBody.replaceChildren(h('p',{class:'msg err'},err.message)); return; }
+  if(SESSION&&VAULT){ startApp(); return; }
+  SESSION=null;
+  VAULT?showLogin():showSetup();
+})();
+</script>
+</body>
+</html>

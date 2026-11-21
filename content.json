@@ -1,0 +1,135 @@
+{
+  "site": {
+    "title": "MARCOCO — House, Techno & Beyond",
+    "description": "MARCOCO — Berlin-based house & techno DJ. Rolling grooves, driving rhythms, sweet harmonies and unexpected twists.",
+    "gateLine": "Berlin · House · Techno · Beyond"
+  },
+  "audio": {
+    "track": "assets/audio/marcoco-live.mp3",
+    "label": "Live cuts — Marcoco",
+    "volume": 0.65,
+    "bpm": 124
+  },
+  "hero": {
+    "name": "MARCOCO",
+    "leftText": "One half of C'mon since 2013.\nSolo since 2025.",
+    "rightText": "Rolling grooves.\nDriving rhythms.\nUnexpected twists.",
+    "tagLeft": "House / Techno / Beyond",
+    "tagRight": "Berlin — DE",
+    "hint": "You're outside the club.\nScroll to get in."
+  },
+  "manifesto": {
+    "lines": [
+      "Rooted in house.",
+      "Rolling grooves.",
+      "Driving rhythms.",
+      "Sweet harmonies.",
+      "Unexpected twists."
+    ],
+    "image": "assets/img/p2.jpg",
+    "tape": "Marcoco ✦ House ✦ Techno ✦ And beyond ✦ Berlin ✦ Rolling grooves ✦"
+  },
+  "bio": {
+    "title": "A decade on the decks.",
+    "titleOutline": "A new chapter.",
+    "lead": "Rooted in house music and backed by more than a decade behind the decks, Marcoco has shaped a style of his own — built on diverse influences and a natural instinct to keep the dancefloor moving.",
+    "paragraphs": [
+      "Since 2013 he has been one half of the house duo C'mon, playing across Europe, South America and Asia, with releases on established house labels along the way. From 2022 to 2025 he also co-ran the record label PRïMA.",
+      "In 2025 it was time for a solo project. As Marcoco, his selections move freely between house, techno and beyond — driven by curiosity for different genres and a love for the spaces where musical boundaries blur. His sets weave old-school influences, rolling grooves, driving rhythms, sweet harmonies and unexpected twists into a sound that shifts between moods and energies without ever losing its drive."
+    ],
+    "portrait": "assets/img/p6.jpg",
+    "badge": "Berlin · DE",
+    "timeline": [
+      { "year": "2013", "label": "C'mon formed" },
+      { "year": "2022–25", "label": "PRïMA label" },
+      { "year": "2025", "label": "Marcoco solo" }
+    ],
+    "stats": [
+      { "value": 10, "suffix": "+", "label": "Years behind\nthe decks" },
+      { "value": 3, "suffix": "", "label": "Continents\nplayed" },
+      { "value": 12, "suffix": "", "label": "Shows\n2025 – 26" }
+    ]
+  },
+  "gallery": {
+    "title": "In the",
+    "titleOutline": "frame.",
+    "intro": "Studio portraits from the 2025 shoot. Keep scrolling — the wall moves sideways.",
+    "images": [
+      { "src": "assets/img/p2.jpg", "caption": "Neon session" },
+      { "src": "assets/img/p3.jpg", "caption": "Black & white" },
+      { "src": "assets/img/p1.jpg", "caption": "Close-up" },
+      { "src": "assets/img/p4.jpg", "caption": "Overhead" },
+      { "src": "assets/img/p5.jpg", "caption": "The chair" },
+      { "src": "assets/img/p6.jpg", "caption": "Off duty" }
+    ]
+  },
+  "releases": {
+    "title": "Pressed",
+    "titleOutline": "to wax.",
+    "items": [
+      { "title": "Don't\nLeave You", "year": "2025", "type": "Single", "label": "Self-release", "link": "", "cover": "assets/img/p4.jpg", "disc": "assets/img/p2.jpg" },
+      { "title": "Meet\nYou", "year": "2025", "type": "Release", "label": "Sachsentrance", "link": "", "cover": "assets/img/p5.jpg", "disc": "assets/img/p3.jpg" }
+    ]
+  },
+  "live": {
+    "title": "From",
+    "titleOutline": "the floor.",
+    "intro": "Raw footage from the booth — Berlin to Bogotá. Keep scrolling sideways through the night.",
+    "outro": "See you",
+    "outroOutline": "on the floor.",
+    "videos": [
+      { "src": "assets/video/ritter_techno.mp4", "poster": "assets/video/ritter_techno.jpg", "title": "Ritter Butzke", "meta": "Berlin · Techno", "vertical": false },
+      { "src": "assets/video/mayday.mp4", "poster": "assets/video/mayday.jpg", "title": "1st of May Rave", "meta": "Berlin · 2026", "vertical": false },
+      { "src": "assets/video/moyn.mp4", "poster": "assets/video/moyn.jpg", "title": "Moyn Festival", "meta": "Germany · House", "vertical": false },
+      { "src": "assets/video/miercoles.mp4", "poster": "assets/video/miercoles.jpg", "title": "I Love Miércoles", "meta": "Bogotá · House", "vertical": true }
+    ]
+  },
+  "shows": {
+    "title": "Berlin",
+    "titleOutline": "& beyond.",
+    "intro": "KitKat to Kater Blau, Ritter Butzke to Puerto Alto. Hover a night.",
+    "items": [
+      { "year": "2026", "venue": "Ritter Butzke", "city": "Berlin, DE", "image": "assets/img/p2.jpg" },
+      { "year": "2026", "venue": "KitKat Club", "city": "Berlin, DE", "image": "assets/img/p3.jpg" },
+      { "year": "2026", "venue": "HochZeit Festival", "city": "Germany", "image": "assets/img/p5.jpg" },
+      { "year": "2026", "venue": "Lokschuppen", "city": "Berlin, DE", "image": "assets/img/p1.jpg" },
+      { "year": "2026", "venue": "Späti Rave", "city": "Berlin, DE", "image": "assets/img/p4.jpg" },
+      { "year": "2026", "venue": "1. Mai Rave", "city": "Berlin, DE", "image": "assets/img/p6.jpg" },
+      { "year": "2025", "venue": "Kater Blau", "city": "Berlin, DE", "image": "assets/img/p2.jpg" },
+      { "year": "2025", "venue": "Feel Festival", "city": "Berlin, DE", "image": "assets/img/p5.jpg" },
+      { "year": "2025", "venue": "Klunkerkranich", "city": "Berlin, DE", "image": "assets/img/p3.jpg" },
+      { "year": "2025", "venue": "Lokschuppen", "city": "Berlin, DE", "image": "assets/img/p4.jpg" },
+      { "year": "2025", "venue": "KitKat Club", "city": "Berlin, DE", "image": "assets/img/p1.jpg" },
+      { "year": "2025", "venue": "Puerto Alto Festival", "city": "Colombia", "image": "assets/img/p6.jpg" }
+    ]
+  },
+  "booking": {
+    "title": "Let's move",
+    "titleOutline": "the floor.",
+    "sub": "Clubs · Festivals · Open-airs — worldwide",
+    "email": "marcoco.booking@gmail.com",
+    "buttonLabel": "Booking request →",
+    "presskit": "https://drive.google.com/drive/folders/1IUVHZ_2xL9BxDaSfp33fNagEY3xy2E99",
+    "rider": "https://drive.google.com/file/d/18HtZFP4MDUh8i56v0KpEbiN5OsakrDF8/view"
+  },
+  "socials": [
+    { "label": "SoundCloud", "url": "" },
+    { "label": "Spotify", "url": "" },
+    { "label": "Instagram", "url": "" },
+    { "label": "Resident Advisor", "url": "" }
+  ],
+  "tunnel": {
+    "images": [
+      { "src": "assets/img/p3.jpg" },
+      { "src": "assets/img/p1.jpg" },
+      { "src": "assets/img/p2.jpg" },
+      { "src": "assets/img/p4.jpg" },
+      { "src": "assets/img/p5.jpg" },
+      { "src": "assets/img/p6.jpg" }
+    ]
+  },
+  "footer": {
+    "left": "© 2026 Marcoco · Berlin",
+    "right": "Audio: live cuts from Moyn, I Love Miércoles, Ritter Butzke & 1st of May Rave"
+  }
+}
